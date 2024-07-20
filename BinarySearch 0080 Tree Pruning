@@ -1,0 +1,20 @@
+class Solution {
+public:
+    TreeNode* solve(TreeNode* root) {
+        return dfs(root) ? nullptr : root;
+    }
+
+private:
+    bool dfs(TreeNode* node) {
+        if (!node) return true; // An empty node is considered to be zero-sum
+
+        bool leftEmpty = dfs(node->left);
+        bool rightEmpty = dfs(node->right);
+
+        if (leftEmpty) node->left = nullptr;  // Remove left subtree if it's zero-sum
+        if (rightEmpty) node->right = nullptr; // Remove right subtree if it's zero-sum
+
+        // Return true if the node is zero-sum and both subtrees are also zero-sum
+        return leftEmpty && rightEmpty && node->val == 0;
+    }
+};
