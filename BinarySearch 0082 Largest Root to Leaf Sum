@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        ans = 0;
+        dfs(root, 0);
+        return ans;
+    }
+
+private:
+    void dfs(TreeNode* node, int val) {
+        if (!node) {
+            ans = std::max(ans, val);
+            return;
+        }
+        dfs(node->left, val + node->val);
+        dfs(node->right, val + node->val);
+    }
+
+    int ans;
+};
