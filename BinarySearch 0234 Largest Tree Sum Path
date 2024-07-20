@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        ans = INT_MIN;
+        dfs(root);
+        return ans;
+    }
+
+private:
+    int ans;
+    
+    pair<int, int> dfs(TreeNode* node) {
+        if (!node) return {0, 0};
+        
+        auto [l1, r1] = dfs(node->left);
+        auto [l2, r2] = dfs(node->right);
+        
+        int l = max{l1, r1, 0} + node->val;
+        int r = max{l2, r2, 0} + node->val;
+        
+        ans = max(ans, l + r - node->val);
+        
+        return {l, r};
+    }
+};
