@@ -1,0 +1,7 @@
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        if (!root) return 0;
+        return solve(root->left) + solve(root->right) + root->val;
+    }
+};
