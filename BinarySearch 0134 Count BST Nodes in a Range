@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int solve(TreeNode* root, int low, int high) {
+        int out = 0;
+        dfs(root, low, high, out);
+        return out;
+    }
+
+private:
+    void dfs(TreeNode* node, int low, int high, int& out) {
+        if (!node) return;
+        
+        if (low <= node->val && node->val <= high) {
+            ++out;
+        }
+        
+        if (node->val > low) {
+            dfs(node->left, low, high, out);
+        }
+        
+        if (node->val < high) {
+            dfs(node->right, low, high, out);
+        }
+    }
+};
