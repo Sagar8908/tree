@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool solve(TreeNode* root, int val) {
+        if (!root) {
+            return false;
+        }
+        
+        if (val == root->val) {
+            return true;
+        }
+        
+        if (val < root->val) {
+            return solve(root->left, val);
+        } else {
+            return solve(root->right, val);
+        }
+    }
+};
