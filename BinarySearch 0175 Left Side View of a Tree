@@ -1,0 +1,24 @@
+class Solution {
+public:
+    std::vector<int> solve(TreeNode* root) {
+        std::unordered_map<int, int> ans;
+        dfs(root, 0, ans);
+        
+        std::vector<int> result;
+        for (int i = 0; i < ans.size(); ++i) {
+            result.push_back(ans[i]);
+        }
+        return result;
+    }
+
+private:
+    void dfs(TreeNode* node, int depth, std::unordered_map<int, int>& ans) {
+        if (!node) return;
+        
+        dfs(node->left, depth + 1, ans);
+        if (ans.find(depth) == ans.end()) {
+            ans[depth] = node->val;
+        }
+        dfs(node->right, depth + 1, ans);
+    }
+};
