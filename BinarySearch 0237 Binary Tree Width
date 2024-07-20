@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        if (!root) return 0;
+
+        int level_old = 1;
+        int num_old = 1;
+        int max_width = 0;
+        
+        deque<tuple<int, int, TreeNode*>> queue;
+        queue.push_back({1, 1, root});
+        
+        while (!queue.empty()) {
+            auto [num, level, node] = queue.front();
+            queue.pop_front();
+            
+            if (level > level_old) {
+                level_old = level;
+                num_old = num;
+            }
+            
+            max_width = max(max_width, num - num_old + 1);
+            
+            if (node->left)  queue.push_back({num * 2, level + 1, node->left});
+            if (node->right) queue.push_back({num * 2 + 1, level + 1, node->right});
+        }
+        
+        return max_width;
+    }
+};
