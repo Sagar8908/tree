@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int solve(TreeNode* root, int k) {
+        TreeNode* parent = dfs(root, nullptr, k);
+        if (!parent) return -1; // If `k` is not found, return -1 or handle as needed
+        
+        // Check the sibling of the node with value `k`
+        if (parent->left && parent->left->val == k) {
+            return parent->right ? parent->right->val : -1;
+        } else if (parent->right && parent->right->val == k) {
+            return parent->left ? parent->left->val : -1;
+        }
+        
+        return -1; // In case no sibling is found
+    }
+
+private:
+    TreeNode* dfs(TreeNode* node, TreeNode* par, int val) {
+        if (!node) return nullptr;
+        if (node->val == val) return par;
+        
+        // Continue DFS on left and right children
+        TreeNode* leftSearch = dfs(node->left, node, val);
+        if (leftSearch) return leftSearch;
+        return dfs(node->right, node, val);
+    }
+};
