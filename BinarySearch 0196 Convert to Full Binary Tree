@@ -1,0 +1,20 @@
+class Solution {
+public:
+    TreeNode* solve(TreeNode* root) {
+        if (!root || (!root->left && !root->right)) {
+            return root; // Return root if it is null or a leaf node
+        }
+        
+        if (!root->left) {
+            return solve(root->right); // Remove current node and replace with right subtree
+        }
+        
+        if (!root->right) {
+            return solve(root->left); // Remove current node and replace with left subtree
+        }
+        
+        root->left = solve(root->left);
+        root->right = solve(root->right);
+        return root;
+    }
+};
