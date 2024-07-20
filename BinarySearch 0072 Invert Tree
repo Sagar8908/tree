@@ -1,0 +1,14 @@
+class Solution {
+public:
+    TreeNode* solve(TreeNode* root) {
+        if (!root) return nullptr;
+        
+        TreeNode* left = solve(root->left);
+        TreeNode* right = solve(root->right);
+        
+        root->left = right;
+        root->right = left;
+        
+        return root;
+    }
+};
