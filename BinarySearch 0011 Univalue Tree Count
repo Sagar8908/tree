@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int ans = 0;
+
+    bool dfs(TreeNode* node, int &val) {
+        if (!node) return true;
+        int leftVal, rightVal;
+        bool left = dfs(node->left, leftVal);
+        bool right = dfs(node->right, rightVal);
+
+        if (left && right) {
+            if ((node->left && node->val != leftVal) || (node->right && node->val != rightVal)) {
+                return false;
+            }
+            ans++;
+            val = node->val;
+            return true;
+        }
+        return false;
+    }
+
+    int solve(TreeNode* root) {
+        int dummy;
+        dfs(root, dummy);
+        return ans;
+    }
+};
