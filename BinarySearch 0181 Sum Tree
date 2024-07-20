@@ -1,0 +1,14 @@
+class Solution {
+public:
+    bool solve(TreeNode* root) {
+        if (!root) return true; // Empty tree is valid
+
+        if (!root->left && !root->right) return true; // Leaf nodes are valid
+
+        int sum = 0;
+        if (root->left) sum += root->left->val;
+        if (root->right) sum += root->right->val;
+
+        return solve(root->left) && solve(root->right) && sum == root->val;
+    }
+};
