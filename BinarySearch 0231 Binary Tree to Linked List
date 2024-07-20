@@ -1,0 +1,31 @@
+class Solution {
+public:
+    LLNode* solve(TreeNode* root) {
+        return helper(root).first;
+    }
+    
+private:
+    pair<LLNode*, LLNode*> helper(TreeNode* node) {
+        if (!node) return {nullptr, nullptr};
+        
+        auto [b1, e1] = helper(node->left);
+        auto [b2, e2] = helper(node->right);
+        LLNode* nodeL = new LLNode(node->val);
+        
+        if (!e1 && !e2) {
+            return {nodeL, nodeL};
+        }
+        if (!e1 && e2) { 
+            nodeL->next = b2;
+            return {nodeL, e2};
+        }
+        if (e1 && !e2) {
+            e1->next = nodeL;
+            return {b1, nodeL};
+        } else {
+            e1->next = nodeL;
+            nodeL->next = b2;
+            return {b1, e2};
+        }
+    }
+};
