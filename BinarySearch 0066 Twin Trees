@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool solve(TreeNode* p, TreeNode* q) {
+        // Both trees are empty
+        if (!p && !q) return true;
+
+        // One tree is empty and the other is not
+        if (!p || !q) return false;
+
+        // Node values are different
+        if (p->val != q->val) return false;
+
+        // Recursively compare left and right subtrees
+        return solve(p->left, q->left) && solve(p->right, q->right);
+    }
+};
