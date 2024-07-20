@@ -1,0 +1,25 @@
+class Solution {
+public:
+    TreeNode* solve(TreeNode* root) {
+        auto dfs = [&](TreeNode* node, auto& dfs_ref) -> std::tuple<int, bool, int, int> {
+            if (!node) return {0, true, INT_MIN, INT_MAX};
+            
+            auto [s_L, bst_L, max_L, min_L] = dfs_ref(node->left, dfs_ref);
+            auto [s_R, bst_R, max_R, min_R] = dfs_ref(node->right, dfs_ref);
+            
+            if (bst_L && bst_R && max_L < node->val && node->val < min_R) {
+                int v = 1 + s_L + s_R;
+                if (v > std::get<0>(ans)) {
+                    ans = {v, node};
+                }
+                return {v, true, std::max(max_R, node->val), std::min(node->val, min_L)};
+            }
+            
+            return {0, false, INT_MIN, INT_MAX};
+        };
+        
+        std::tuple<int, TreeNode*> ans = {0, nullptr};
+        dfs(root, dfs);
+        return std::get<1>(ans);
+    }
+};
