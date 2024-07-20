@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool solve(TreeNode* root) {
+        bool isBalanced = true;
+        
+        // Helper function to perform DFS and check balance
+        std::function<int(TreeNode*)> dfs = [&](TreeNode* node) -> int {
+            if (!node) return 0;
+            
+            int lft = dfs(node->left);
+            int rgh = dfs(node->right);
+            
+            if (abs(lft - rgh) > 1) isBalanced = false;
+            
+            return std::max(lft, rgh) + 1;
+        };
+        
+        dfs(root);
+        return isBalanced;
+    }
+};
