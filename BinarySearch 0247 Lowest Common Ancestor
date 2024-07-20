@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int solve(TreeNode* root, int p, int q) {
+        // Vectors to store the Euler path and depth
+        vector<int> arr;
+        vector<int> dep;
+        
+        // DFS to fill Euler path and depth vectors
+        dfs(root, 0, arr, dep);
+        
+        // Find the indices of p and q in the Euler path
+        int i1 = find(arr.begin(), arr.end(), p) - arr.begin();
+        int i2 = find(arr.begin(), arr.end(), q) - arr.begin();
+        if (i1 > i2) swap(i1, i2);
+        
+        // Find the minimum depth in the range [i1, i2]
+        int min_depth = INT_MAX;
+        int lca = -1;
+        for (int i = i1; i <= i2; ++i) {
+            if (dep[i] < min_depth) {
+                min_depth = dep[i];
+                lca = arr[i];
+            }
+        }
+        
+        return lca;
+    }
+
+private:
+    void dfs(TreeNode* node, int depth, vector<int>& arr, vector<int>& dep) {
+        if (!node) return;
+        
+        // Add the current node to the Euler path and record its depth
+        arr.push_back(node->val);
+        dep.push_back(depth);
+        
+        // Traverse the left subtree
+        if (node->left) {
+            dfs(node->left, depth + 1, arr, dep);
+            // Add the current node again after returning from left subtree
+            arr.push_back(node->val);
+            dep.push_back(depth);
+        }
+        
+        // Traverse the right subtree
+        if (node->right) {
+            dfs(node->right, depth + 1, arr, dep);
+            // Add the current node again after returning from right subtree
+            arr.push_back(node->val);
+            dep.push_back(depth);
+        }
+    }
+};
