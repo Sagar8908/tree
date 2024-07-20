@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool solve(TreeNode* root) {
+        if (!root) return true;
+
+        std::deque<TreeNode*> queue;
+        queue.push_back(root);
+        bool reachedEnd = false;
+
+        while (!queue.empty()) {
+            TreeNode* node = queue.front();
+            queue.pop_front();
+
+            if (!node) {
+                reachedEnd = true;
+            } else {
+                if (reachedEnd) return false;
+                queue.push_back(node->left);
+                queue.push_back(node->right);
+            }
+        }
+
+        return true;
+    }
+};
