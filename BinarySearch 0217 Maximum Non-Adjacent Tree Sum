@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        return max(dfs(root));
+    }
+    
+private:
+    vector<int> dfs(TreeNode* node) {
+        if (!node) return {0, 0};
+        
+        vector<int> L = dfs(node->left);
+        vector<int> R = dfs(node->right);
+        
+        int max_path_sum = node->val + L[1] + R[1];
+        int max_single_path_sum = max(L[0], R[0]);
+        
+        return {max_path_sum, max_single_path_sum};
+    }
+};
