@@ -1,0 +1,32 @@
+
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        set<int> depths;
+        
+        function<void(TreeNode*, int)> dfs = [&](TreeNode* node, int dep) {
+            if (!node->left && !node->right) {
+                depths.insert(dep);
+            }
+            if (node->left) {
+                dfs(node->left, dep + 1);
+            }
+            if (node->right) {
+                dfs(node->right, dep + 1);
+            }
+        };
+
+        dfs(root, 0);
+
+        // Convert set to vector to access the second last element
+        vector<int> sortedDepths(depths.begin(), depths.end());
+
+        // Check if there are at least two different depths
+        if (sortedDepths.size() < 2) {
+            // Handle the case where there are not enough depths
+            throw runtime_error("Not enough distinct leaf depths");
+        }
+
+        return sortedDepths[sortedDepths.size() - 2];
+    }
+};
