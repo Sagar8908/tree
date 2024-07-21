@@ -1,0 +1,28 @@
+class Solution {
+public:
+    TreeNode* solve(const std::vector<int>& preorder, const std::vector<int>& inorder) {
+        // Create a map to store the index of each value in the inorder traversal
+        std::unordered_map<int, int> index_map;
+        for (int i = 0; i < inorder.size(); ++i) {
+            index_map[inorder[i]] = i;
+        }
+        
+        return helper(preorder, inorder, 0, preorder.size(), 0, inorder.size(), index_map);
+    }
+    
+private:
+    TreeNode* helper(const std::vector<int>& preorder, const std::vector<int>& inorder,
+                     int pr_beg, int pr_end, int in_beg, int in_end,
+                     const std::unordered_map<int, int>& index_map) {
+        if (pr_end <= pr_beg) return nullptr;
+        
+        int root_val = preorder[pr_beg];
+        int ind = index_map.at(root_val);
+        TreeNode* root = new TreeNode(root_val);
+        
+        root->left = helper(preorder, inorder, pr_beg + 1, pr_beg + 1 + ind - in_beg, in_beg, ind, index_map);
+        root->right = helper(preorder, inorder, pr_beg + ind - in_beg + 1, pr_end, ind + 1, in_end, index_map);
+        
+        return root;
+    }
+};
