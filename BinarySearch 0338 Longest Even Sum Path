@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        int ans = 0;
+        std::function<std::pair<int, int>(TreeNode*)> dfs = [&](TreeNode* node) -> std::pair<int, int> {
+            if (!node) return {0, std::numeric_limits<int>::min()};
+            
+            auto [e1, o1] = dfs(node->left);
+            auto [e2, o2] = dfs(node->right);
+            
+            int e, o;
+            if (node->val % 2 == 0) {
+                e = std::max(e1, e2) + 1;
+                o = std::max(o1, o2) + 1;
+                ans = std::max({ans, e1 + e2 + 1, o1 + o2 + 1, e});
+            } else {
+                e = std::max(o1, o2) + 1;
+                o = std::max(e1, e2) + 1;
+                ans = std::max({ans, e1 + o2 + 1, e2 + o1 + 1, e});
+            }
+            
+            return {e, o};
+        };
+        
+        dfs(root);
+        return ans;
+    }
+};
