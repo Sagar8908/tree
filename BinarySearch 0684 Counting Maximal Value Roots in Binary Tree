@@ -1,0 +1,17 @@
+
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        int ans = 0;
+        dfs(root, ans);
+        return ans;
+    }
+
+private:
+    int dfs(TreeNode* node, int& ans) {
+        if (!node) return INT_MIN; // Use INT_MIN to represent negative infinity
+        int max_val = max(node->val, max(dfs(node->left, ans), dfs(node->right, ans)));
+        if (node->val == max_val) ++ans;
+        return max_val;
+    }
+};
