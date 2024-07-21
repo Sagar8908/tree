@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int maxProduct(TreeNode* root) {
+        long long totalSum = getTotalSum(root);
+        maxProduct = 0;
+        computeSubtreeSum(root, totalSum);
+        return maxProduct % 1000000007;  // Return result modulo 10^9 + 7
+    }
+
+private:
+    long long maxProduct;
+    
+    long long getTotalSum(TreeNode* node) {
+        if (!node) return 0;
+        return node->val + getTotalSum(node->left) + getTotalSum(node->right);
+    }
+    
+    long long computeSubtreeSum(TreeNode* node, long long totalSum) {
+        if (!node) return 0;
+        long long leftSum = computeSubtreeSum(node->left, totalSum);
+        long long rightSum = computeSubtreeSum(node->right, totalSum);
+        long long subtreeSum = node->val + leftSum + rightSum;
+        
+        // Calculate the product of the two subtrees
+        if (node->left) maxProduct = max(maxProduct, subtreeSum * (totalSum - subtreeSum));
+        if (node->right) maxProduct = max(maxProduct, subtreeSum * (totalSum - subtreeSum));
+        
+        return subtreeSum;
+    }
+};
