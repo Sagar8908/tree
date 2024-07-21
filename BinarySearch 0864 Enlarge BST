@@ -1,0 +1,37 @@
+#include <iostream>
+
+// Definition for a binary tree node
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    Solution() : total(0) {}
+    
+    TreeNode* solve(TreeNode* root) {
+        // Base case: if the root is null, return null
+        if (!root) return nullptr;
+        
+        // Recursively process the right subtree first
+        solve(root->right);
+        
+        // Accumulate the total sum of values in the nodes
+        total += root->val;
+        
+        // Update the current node's value with the accumulated total
+        root->val = total;
+        
+        // Recursively process the left subtree
+        solve(root->left);
+        
+        // Return the updated root
+        return root;
+    }
+
+private:
+    int total; // Accumulates the sum of values from right to left
+};
