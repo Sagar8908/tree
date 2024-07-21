@@ -1,0 +1,15 @@
+class Solution {
+public:
+    std::string serialize(TreeNode* root) {
+        if (!root) return "#";
+        std::ostringstream oss;
+        oss << root->val << ":" << serialize(root->left) << ":" << serialize(root->right);
+        return oss.str();
+    }
+
+    bool solve(TreeNode* s, TreeNode* t) {
+        std::string s_serialized = serialize(s);
+        std::string t_serialized = serialize(t);
+        return t_serialized.find(s_serialized) != std::string::npos;
+    }
+};
