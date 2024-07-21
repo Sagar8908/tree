@@ -1,0 +1,16 @@
+class Solution {
+public:
+    TreeNode* solve(TreeNode* root) {
+        dfs(root);
+        return root;
+    }
+
+private:
+    void dfs(TreeNode* node) {
+        if (!node) return;
+        dfs(node->left);
+        dfs(node->right);
+        if (node->left) node->val += node->left->val;
+        if (node->right) node->val += node->right->val;
+    }
+};
