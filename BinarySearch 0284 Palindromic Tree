@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool solve(TreeNode* root) {
+        std::vector<int> inorder1, inorder2;
+        inorderTraversal(root, inorder1, true);
+        inorderTraversal(root, inorder2, false);
+
+        return inorder1 == inorder2;
+    }
+
+private:
+    void inorderTraversal(TreeNode* node, std::vector<int>& vals, bool leftToRight) {
+        if (!node) return;
+        std::stack<TreeNode*> stack;
+        TreeNode* current = node;
+
+        while (current || !stack.empty()) {
+            while (current) {
+                stack.push(current);
+                current = leftToRight ? current->left : current->right;
+            }
+            current = stack.top();
+            stack.pop();
+            vals.push_back(current->val);
+            current = leftToRight ? current->right : current->left;
+        }
+    }
+};
