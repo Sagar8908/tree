@@ -1,0 +1,40 @@
+class Solution {
+public:
+    TreeNode* solve(TreeNode* root) {
+        if (!root) return root;
+        
+        deque<TreeNode*> queue;
+        vector<vector<TreeNode*>> levels;
+        queue.push_back(root);
+        
+        // Level-order traversal
+        while (!queue.empty()) {
+            vector<TreeNode*> level;
+            int size = queue.size();
+            for (int i = 0; i < size; ++i) {
+                TreeNode* node = queue.front();
+                queue.pop_front();
+                level.push_back(node);
+                if (node->left) queue.push_back(node->left);
+                if (node->right) queue.push_back(node->right);
+            }
+            levels.push_back(level);
+        }
+        
+        levels.push_back(vector<TreeNode*>());
+        
+        // Connecting nodes
+        for (int x = levels.size() - 2; x >= 0; --x) {
+            vector<TreeNode*>& row = levels[x + 1];
+            for (auto node = levels[x].rbegin(); node != levels[x].rend(); ++node) {
+                TreeNode* current = *node;
+                current->right = !row.empty() ? row.back() : nullptr;
+                if (!row.empty()) row.pop_back();
+                current->left = !row.empty() ? row.back() : nullptr;
+                if (!row.empty()) row.pop_back();
+            }
+        }
+        
+        return root;
+    }
+};
