@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        int mn = 0, mx = 0;
+        dfs(root, 0, mn, mx);
+        return mx - mn + 1;
+    }
+
+private:
+    void dfs(TreeNode* node, int d, int& mn, int& mx) {
+        if (!node) return;
+
+        mn = min(mn, d);
+        mx = max(mx, d);
+
+        dfs(node->left, d - 1, mn, mx);
+        dfs(node->right, d + 1, mn, mx);
+    }
+};
