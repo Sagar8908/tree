@@ -1,0 +1,34 @@
+#include <iostream>
+using namespace std;
+
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        ans = 0;
+        dfs(root, NULL, NULL);
+        return ans;
+    }
+
+private:
+    int ans;
+
+    void dfs(TreeNode* node, TreeNode* parent, TreeNode* grandparent) {
+        if (!node) 
+            return;
+
+        if (grandparent && grandparent->val % 2 == 0) {
+            ans += node->val;
+        }
+
+        dfs(node->left, node, parent);
+        dfs(node->right, node, parent);
+    }
+};
