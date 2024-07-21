@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool solve(TreeNode* root) {
+        unordered_map<int, int> cols;
+        vector<int> deps(2, 0);
+
+        function<void(TreeNode*, int)> dfs = [&](TreeNode* node, int d) {
+            if (!node) return;
+            cols[node->val]++;
+            deps[d % 2]++;
+            dfs(node->left, d + 1);
+            dfs(node->right, d + 1);
+        };
+
+        dfs(root, 0);
+
+        vector<int> A, B(deps);
+        for (const auto& kv : cols) {
+            A.push_back(kv.second);
+        }
+        
+        sort(A.begin(), A.end());
+        sort(B.begin(), B.end());
+
+        while (A.size() < 2) {
+            A.insert(A.begin(), 0);
+        }
+
+        return A == B;
+    }
+};
