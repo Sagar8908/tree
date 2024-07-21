@@ -1,0 +1,20 @@
+class Solution {
+public:
+    double solve(TreeNode* root) {
+        double ans = 0.0;
+        
+        // Helper function to perform DFS
+        function<pair<int, int>(TreeNode*)> dfs = [&](TreeNode* node) -> pair<int, int> {
+            if (!node) return {0, 0};
+            auto [cnt1, sum1] = dfs(node->left);
+            auto [cnt2, sum2] = dfs(node->right);
+            int cnt3 = cnt1 + cnt2 + 1;
+            int sum3 = sum1 + sum2 + node->val;
+            ans = max(ans, sum3 * 1.0 / cnt3);
+            return {cnt3, sum3};
+        };
+        
+        dfs(root);
+        return ans;
+    }
+};
