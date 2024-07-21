@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool solve(TreeNode* root, int target) {
+        if (target <= 0) return false;
+        
+        // Generate the path from target to 1
+        vector<int> path;
+        while (target > 0) {
+            path.push_back(target);
+            target /= 2;
+        }
+        reverse(path.begin(), path.end());
+        
+        // Traverse the tree according to the path
+        for (int i = 0; i < path.size(); ++i) {
+            if (!root || root->val != path[i]) return false;
+            if (i + 1 < path.size()) {
+                if (path[i + 1] == 2 * path[i]) {
+                    root = root->left;
+                } else {
+                    root = root->right;
+                }
+            }
+        }
+        return true;
+    }
+};
