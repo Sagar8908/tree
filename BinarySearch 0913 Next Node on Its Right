@@ -1,0 +1,31 @@
+class Solution {
+public:
+    TreeNode* solve(TreeNode* root, int target) {
+        if (!root) return NULL;
+        
+        queue<TreeNode*> q;
+        q.push(root);
+        
+        while (!q.empty()) {
+            vector<TreeNode*> level;
+            int levelSize = q.size();
+            
+            for (int i = 0; i < levelSize; ++i) {
+                TreeNode* node = q.front();
+                q.pop();
+                level.push_back(node);
+                
+                if (node->left)  q.push(node->left);
+                if (node->right) q.push(node->right);
+            }
+            
+            for (int i = 0; i < level.size() - 1; ++i) {
+                if (level[i]->val == target) {
+                    return level[i + 1];
+                }
+            }
+        }
+        
+        return NULL;
+    }
+};
