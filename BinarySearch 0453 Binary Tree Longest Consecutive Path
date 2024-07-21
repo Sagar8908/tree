@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int maxlen = 1;
+
+    std::vector<int> dfs(TreeNode* node) {
+        if (!node) return {0, 0};  // {smaller, bigger}
+
+        std::vector<int> lengths = {0, 0};  // {smaller, bigger}
+        if (node->left) {
+            std::vector<int> left_lengths = dfs(node->left);
+            if (node->left->val == node->val - 1) {
+                lengths[0] = std::max(lengths[0], 1 + left_lengths[0]);
+            } else if (node->left->val == node->val + 1) {
+                lengths[1] = std::max(lengths[1], 1 + left_lengths[1]);
+            }
+        }
+        if (node->right) {
+            std::vector<int> right_lengths = dfs(node->right);
+            if (node->right->val == node->val - 1) {
+                lengths[0] = std::max(lengths[0], 1 + right_lengths[0]);
+            } else if (node->right->val == node->val + 1) {
+                lengths[1] = std::max(lengths[1], 1 + right_lengths[1]);
+            }
+        }
+
+        maxlen = std::max(maxlen, lengths[0] + lengths[1] + 1);
+        return lengths;
+    }
+
+    int solve(TreeNode* root) {
+        dfs(root);
+        return maxlen;
+    }
+}; 
