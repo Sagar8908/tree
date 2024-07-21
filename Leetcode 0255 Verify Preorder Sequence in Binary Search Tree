@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool verifyPreorder(vector<int>& preorder) {
+        stack<int> st;
+        int curr = INT_MIN;
+        
+        for (int num : preorder) {
+            while (!st.empty() && num >= st.top()) {
+                int top = st.top();
+                st.pop();
+                if (top < curr) return false;
+                curr = top;
+            }
+            st.push(num);
+        }
+        
+        return true;
+    }
+};
