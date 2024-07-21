@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int result;
+    unordered_map<int, int> count;
+
+    void dfs(TreeNode* root, int sum, int root_sum) {
+        if (!root) return;
+        root_sum += root->val;
+        result += count[root_sum];
+        count[root_sum + sum]++;
+        dfs(root->left, sum, root_sum);
+        dfs(root->right, sum, root_sum);
+        count[root_sum + sum]--;
+    }
+
+    int solve(TreeNode* root, int sum) {
+        result = 0;
+        count.clear();
+        count[sum] = 1;
+        dfs(root, sum, 0);
+        return result;
+    }
+};
