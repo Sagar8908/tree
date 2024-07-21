@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        int ans = 0;  // Variable to store the maximum subtree sum
+        
+        // Lambda function for depth-first search
+        function<int(TreeNode*)> dfs = [&](TreeNode* node) -> int {
+            if (!node) return 0;  // Base case: empty node
+            int leftSum = dfs(node->left);  // Get sum of left subtree
+            int rightSum = dfs(node->right);  // Get sum of right subtree
+            int sum = leftSum + rightSum + node->val;  // Calculate current subtree sum
+            ans = max(ans, sum);  // Update maximum sum
+            return sum;  // Return current subtree sum
+        };
+        
+        dfs(root);  // Start DFS from the root
+        return ans;  // Return the maximum subtree sum
+    }
+};
