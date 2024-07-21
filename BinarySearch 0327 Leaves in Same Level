@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool solve(TreeNode* root) {
+        std::unordered_set<int> depths;
+        dfs(root, 0, depths);
+        return depths.size() == 1;
+    }
+
+private:
+    void dfs(TreeNode* node, int depth, std::unordered_set<int>& depths) {
+        if (!node) return;
+        if (!node->left && !node->right) {
+            depths.insert(depth);
+        }
+        dfs(node->left, depth + 1, depths);
+        dfs(node->right, depth + 1, depths);
+    }
+};
