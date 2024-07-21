@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        ans = 0;
+        dfs(root);
+        return ans;
+    }
+
+private:
+    int ans;
+
+    tuple<int, bool, int, int> dfs(TreeNode* node) {
+        if (!node) 
+            return {0, true, INT_MIN, INT_MAX};
+        
+        auto [s_L, bst_L, max_L, min_L] = dfs(node->left);
+        auto [s_R, bst_R, max_R, min_R] = dfs(node->right);
+        
+        if (bst_L && bst_R && max_L < node->val && node->val < min_R) {
+            int v = node->val + s_L + s_R;
+            ans = max(ans, v);
+            return {v, true, max(max_R, node->val), min(node->val, min_L)};
+        }
+        
+        return {0, false, INT_MIN, INT_MAX};
+    }
+};
