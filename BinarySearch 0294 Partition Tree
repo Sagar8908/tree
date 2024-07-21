@@ -1,0 +1,22 @@
+class Solution {
+public:
+    std::vector<int> solve(TreeNode* root) {
+        ans = {0, 0};
+        if (!root) return ans;
+        dfs(root);
+        return ans;
+    }
+
+private:
+    std::vector<int> ans;
+
+    void dfs(TreeNode* node) {
+        if (!node->left && !node->right) {
+            ans[0] += 1;  // Leaf node
+        } else {
+            ans[1] += 1;  // Non-leaf node
+        }
+        if (node->left) dfs(node->left);
+        if (node->right) dfs(node->right);
+    }
+};
