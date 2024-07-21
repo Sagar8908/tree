@@ -1,0 +1,35 @@
+class Solution {
+public:
+    bool solve(TreeNode* root, ListNode* h) {
+        // Convert linked list to array
+        vector<int> A;
+        while (h) {
+            A.push_back(h->val);
+            h = h->next;
+        }
+
+        int n = A.size();
+        vector<int> f(n + 1, -1);
+
+        // Compute failure function for KMP algorithm
+        for (int i = 1; i <= n; ++i) {
+            f[i] = f[i - 1] + 1;
+            while (f[i] > 0 && A[i - 1] != A[f[i] - 1]) {
+                f[i] = f[f[i] - 1] + 1;
+            }
+        }
+
+        // DFS function
+        function<bool(TreeNode*, int)> dfs = [&](TreeNode* node, int i) -> bool {
+            if (i >= n) return true;
+            if (!node) return false;
+            ++i;
+            while (i > 0 && node->val != A[i - 1]) {
+                i = f[i - 1] + 1;
+            }
+            return dfs(node->left, i) || dfs(node->right, i);
+        };
+
+        return dfs(root, 0);
+    }
+};
