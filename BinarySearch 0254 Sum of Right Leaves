@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        sum = 0;
+        dfs(root, 0);
+        return sum;
+    }
+
+private:
+    int sum;
+
+    void dfs(TreeNode* root, int side) {
+        if (!root) return;
+
+        if (!root->left && !root->right) {
+            if (side == 1) sum += root->val;
+        }
+
+        dfs(root->left, -1);
+        dfs(root->right, 1);
+    }
+};
