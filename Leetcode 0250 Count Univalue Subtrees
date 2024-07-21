@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int countUnivalSubtrees(TreeNode* root) {
+        int count = 0;
+        isUnival(root, count);
+        return count;
+    }
+    
+private:
+    bool isUnival(TreeNode* node, int& count) {
+        if (!node) return true;
+        
+        bool leftIsUnival = isUnival(node->left, count);
+        bool rightIsUnival = isUnival(node->right, count);
+        
+        if (leftIsUnival && rightIsUnival) {
+            if ((node->left == nullptr || node->left->val == node->val) &&
+                (node->right == nullptr || node->right->val == node->val)) {
+                count++;
+                return true;
+            }
+        }
+        return false;
+    }
+};
