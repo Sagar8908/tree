@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> solve(TreeNode* root) {
+        unordered_map<int, int> cnt;
+        
+        function<void(TreeNode*, int, int)> dfs = [&](TreeNode* node, int i, int j) {
+            if (!node) return;
+            cnt[i - j] += node->val;
+            if (node->left) dfs(node->left, i + 1, j - 1);
+            if (node->right) dfs(node->right, i + 1, j + 1);
+        };
+        
+        dfs(root, 0, 0);
+        int t = cnt.size();
+        vector<int> result;
+        for (int i = 0; i < t; ++i) {
+            result.push_back(cnt[2 * i]);
+        }
+        
+        return result;
+    }
+};
