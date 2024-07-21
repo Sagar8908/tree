@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int solve(TreeNode* root) {
+        if (!root) return 0;
+        if (!root->left && !root->right) {
+            return root->val;
+        }
+        
+        if (root->left) root->left->val = 10 * root->val + root->left->val;
+        if (root->right) root->right->val = 10 * root->val + root->right->val;
+            
+        return solve(root->left) + solve(root->right);
+    }
+};
