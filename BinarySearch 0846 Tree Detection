@@ -1,0 +1,43 @@
+class Solution {
+public:
+    bool solve(vector<int>& L, vector<int>& R) {
+        int n = L.size();
+        int E = 0;
+        unordered_map<int, vector<int>> G;
+        vector<int> in_deg(n, 0);
+        
+        for (int i = 0; i < n; ++i) {
+            for (int ch : {L[i], R[i]}) {
+                if (ch == -1) continue;
+                G[i].push_back(ch);
+                in_deg[ch]++;
+                E++;
+            }
+        }
+
+        int root = -1;
+        for (int x = 0; x < n; ++x) {
+            if (in_deg[x] == 0) {
+                root = x;
+                break;
+            }
+        }
+
+        if (root == -1) return false;
+
+        vector<int> visited(n, 0);
+        
+        function<void(int)> dfs = [&](int node) {
+            visited[node] = 1;
+            for (int neib : G[node]) {
+                if (visited[neib] == 0) {
+                    dfs(neib);
+                }
+            }
+        };
+
+        dfs(root);
+        
+        return accumulate(visited.begin(), visited.end(), 0) == n && E == n - 1;
+    }
+};
