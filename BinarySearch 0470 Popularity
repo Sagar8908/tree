@@ -1,0 +1,54 @@
+class Solution {
+public:
+    vector<int> solve(vector<pair<int, int>>& edges) {
+        unordered_map<int, vector<int>> G;
+        int n = edges.size() + 1;
+        unordered_map<pair<int, int>, int, hash_pair> d;
+        unordered_map<int, int> dp;
+        
+        // Creating the graph and mapping edges
+        for (int i = 0; i < edges.size(); ++i) {
+            int x = edges[i].first;
+            int y = edges[i].second;
+            G[x].push_back(y);
+            G[y].push_back(x);
+            d[{x, y}] = i;
+            d[{y, x}] = i;  // Ensure bidirectional access
+        }
+
+        // DFS to compute subtree sizes
+        function<int(int, int)> dfs = [&](int node, int par) -> int {
+            if (G[node].empty()) return 0;
+            int ans = 1;
+            for (int child : G[node]) {
+                if (child == par) continue;
+                ans += dfs(child, node);
+            }
+            dp[node] = ans;
+            return ans;
+        };
+
+        dfs(0, -1);
+
+        // Calculate the answer for each edge
+        vector<int> result;
+        for (auto& edge : edges) {
+            int x = edge.first;
+            int y = edge.second;
+            int t = min(dp[x], dp[y]);
+            result.push_back(t * (n - t));
+        }
+
+        return result;
+    }
+
+private:
+    struct hash_pair {
+        template <class T1, class T2>
+        std::size_t operator () (const std::pair<T1, T2>& p) const {
+            auto h1 = std::hash<T1>{}(p.first);
+            auto h2 = std::hash<T2>{}(p.second);
+            return h1 ^ h2;
+        }
+    };
+};
