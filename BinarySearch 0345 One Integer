@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int solve(std::vector<int>& nums) {
+        // Create a priority queue (min-heap)
+        std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap(nums.begin(), nums.end());
+
+        int ans = 0;
+        // Process the heap until only one element remains
+        while (minHeap.size() > 1) {
+            int a = minHeap.top(); minHeap.pop();
+            int b = minHeap.top(); minHeap.pop();
+            ans += (a + b);
+            minHeap.push(a + b);
+        }
+
+        return ans;
+    }
+};
