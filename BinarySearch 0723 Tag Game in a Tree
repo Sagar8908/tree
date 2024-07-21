@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int solve(vector<vector<int>>& edges, int u, int v) {
+        unordered_map<int, vector<int>> G;
+        for (const auto& edge : edges) {
+            G[edge[0]].push_back(edge[1]);
+            G[edge[1]].push_back(edge[0]);
+        }
+
+        int n = edges.size() + 1;
+        vector<int> dist1(n, 0);
+        vector<int> dist2(n, 0);
+
+        dfs(u, -1, 0, dist1, G);
+        dfs(v, -1, 0, dist2, G);
+        
+        int ans = 1;
+        for (int i = 0; i < n; ++i) {
+            if (dist2[i] + 1 < dist1[i]) {
+                ans = max(ans, dist1[i] * 2 - 1);
+            }
+        }
+
+        return ans;
+    }
+
+private:
+    void dfs(int node, int par, int d, vector<int>& dist, unordered_map<int, vector<int>>& G) {
+        dist[node] = d;
+        for (int child : G[node]) {
+            if (child == par) continue;
+            dfs(child, node, d + 1, dist, G);
+        }
+    }
+};
