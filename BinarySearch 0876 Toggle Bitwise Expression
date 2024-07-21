@@ -1,0 +1,53 @@
+#include <iostream>
+#include <unordered_map>
+#include <stack>
+#include <algorithm>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Solution {
+public:
+    int minOperationsToFlip(string E) {
+        // Helper function to create the corresponding dictionary
+        unordered_map<int, int> corr(const string& s) {
+            unordered_map<int, int> d;
+            stack<int> stk;
+            for (int i = 0; i < s.size(); ++i) {
+                if (s[i] == '(') {
+                    stk.push(i);
+                } else if (s[i] == ')') {
+                    int last = stk.top();
+                    stk.pop();
+                    d[i] = last;
+                }
+            }
+            return d;
+        }
+
+        // Helper function for the DFS algorithm
+        pair<int, int> dfs(int beg, int end, const unordered_map<int, int>& d) {
+            if (beg == end) return {E[beg] - '0', 1}; // Return value and count of operations
+
+            int beg2 = d.count(end) ? d.at(end) : end;
+            if (beg2 == beg) return dfs(beg + 1, end - 1, d);
+
+            auto [p1, c1] = dfs(beg, beg2 - 2, d);
+            auto [p2, c2] = dfs(beg2, end, d);
+
+            char op = E[beg2 - 1];
+            auto t = [op](int x, int y) -> int {
+                if (op == '|') return x | y;
+                if (op == '&') return x & y;
+                return x; // Default case
+            };
+
+            int c3 = (p1 + p2 == 1) ? 1 : min(c1, c2) + (p1 ^ (op == '&'));
+            return {t(p1, p2), c3};
+        }
+
+        unordered_map<int, int> d = corr(E);
+        return dfs(0, E.size() - 1, d).second;
+    }
+};
