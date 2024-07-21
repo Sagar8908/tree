@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int solve(TreeNode* root, std::vector<std::string>& moves) {
+        std::unordered_map<TreeNode*, TreeNode*> parentMap;
+        dfs(root, nullptr, parentMap);
+
+        TreeNode* node = root;
+        for (const auto& move : moves) {
+            if (move == "R") node = node->right;
+            else if (move == "L") node = node->left;
+            else if (move == "U") node = parentMap[node];
+        }
+
+        return node->val;
+    }
+
+private:
+    void dfs(TreeNode* node, TreeNode* parent, std::unordered_map<TreeNode*, TreeNode*>& parentMap) {
+        if (!node) return;
+        parentMap[node] = parent;
+        if (node->left) dfs(node->left, node, parentMap);
+        if (node->right) dfs(node->right, node, parentMap);
+    }
+};
