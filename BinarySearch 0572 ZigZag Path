@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int ans;
+    
+    pair<int, int> dfs(TreeNode* node) {
+        if (!node) return {0, 0};
+        
+        auto [l1, l2] = dfs(node->left);
+        auto [r1, r2] = dfs(node->right);
+        
+        pair<int, int> result = {r2 + 1, l1 + 1};
+        ans = max({ans, result.first, result.second});
+        
+        return result;
+    }
+    
+    int solve(TreeNode* root) {
+        ans = 0;
+        dfs(root);
+        return ans;
+    }
+};
