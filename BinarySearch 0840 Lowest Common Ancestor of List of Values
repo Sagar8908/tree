@@ -1,0 +1,21 @@
+class Solution {
+public:
+    TreeNode* solve(TreeNode* root, vector<int>& values) {
+        unordered_set<int> s(values.begin(), values.end());
+        pair<int, TreeNode*> ans = {-1, nullptr};
+
+        function<int(int, TreeNode*)> dfs = [&](int lvl, TreeNode* node) -> int {
+            if (!node) return 0;
+            int lft = dfs(lvl + 1, node->left);
+            int rgh = dfs(lvl + 1, node->right);
+            int total = lft + rgh + (s.count(node->val) > 0);
+            if (total == s.size()) {
+                ans = max(ans, make_pair(lvl, node));
+            }
+            return total;
+        };
+
+        dfs(0, root);
+        return ans.second;
+    }
+};
