@@ -1,0 +1,43 @@
+#include <vector>
+#include <unordered_set>
+
+using namespace std;
+
+// Definition for a binary tree node
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    bool solve(TreeNode* a, TreeNode* b, int target) {
+        vector<int> arr1, arr2;
+        
+        // Helper function for in-order traversal
+        function<void(TreeNode*, vector<int>&)> dfs = [&](TreeNode* node, vector<int>& res) {
+            if (!node) return;
+            dfs(node->left, res);
+            res.push_back(node->val);
+            dfs(node->right, res);
+        };
+
+        // Perform in-order traversal on both trees
+        dfs(a, arr1);
+        dfs(b, arr2);
+
+        // Convert vectors to sets
+        unordered_set<int> s1(arr1.begin(), arr1.end());
+        unordered_set<int> s2(arr2.begin(), arr2.end());
+
+        // Check if there's a pair of elements such that their sum equals the target
+        for (int x : s1) {
+            if (s2.find(target - x) != s2.end()) {
+                return true;
+            }
+        }
+        return false;
+    }
+};
