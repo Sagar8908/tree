@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int Max;
+
+    void dfs(TreeNode* node, int low, int high) {
+        if (!node) return;
+
+        Max = max(Max, abs(node->val - low));
+        Max = max(Max, abs(node->val - high));
+        int low1 = min(low, node->val);
+        int high1 = max(high, node->val);
+        dfs(node->left, low1, high1);
+        dfs(node->right, low1, high1);
+    }
+
+    int solve(TreeNode* root) {
+        if (!root) return 0;
+        Max = 0;
+        dfs(root, root->val, root->val);
+        return Max;
+    }
+};
