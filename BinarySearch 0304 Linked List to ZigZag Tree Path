@@ -1,0 +1,22 @@
+class Solution {
+public:
+    TreeNode* solve(ListNode* node) {
+        if (!node) return nullptr;
+
+        TreeNode* root = new TreeNode(node->val);
+        TreeNode* curr = root;
+
+        while (node->next) {
+            if (node->next->val < node->val) {
+                curr->left = new TreeNode(node->next->val);
+                curr = curr->left;
+            } else {
+                curr->right = new TreeNode(node->next->val);
+                curr = curr->right;
+            }
+            node = node->next;
+        }
+
+        return root;
+    }
+};
