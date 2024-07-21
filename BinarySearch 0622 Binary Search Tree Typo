@@ -1,0 +1,39 @@
+class Solution {
+public:
+    TreeNode* solve(TreeNode* root) {
+        TreeNode *cur = root, *node = new TreeNode(INT_MIN);
+        std::vector<TreeNode*> cands;
+        
+        while (cur) {
+            if (cur->left) {
+                TreeNode *pre = cur->left;
+                while (pre->right && pre->right != cur) {
+                    pre = pre->right;
+                }
+                if (!pre->right) {
+                    pre->right = cur;
+                    cur = cur->left;
+                } else {
+                    pre->right = NULL;
+                    if (cur->val < node->val) {
+                        cands.push_back(node);
+                        cands.push_back(cur);
+                    }
+                    node = cur;
+                    cur = cur->right;
+                }
+            } else {
+                if (cur->val < node->val) {
+                    cands.push_back(node);
+                    cands.push_back(cur);
+                }
+                node = cur;
+                cur = cur->right;
+            }
+        }
+        
+        std::swap(cands[0]->val, cands[cands.size() - 1]->val);
+        delete node; // Clean up the temporary node
+        return root;
+    }
+};
