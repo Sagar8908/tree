@@ -1,0 +1,21 @@
+class Solution {
+public:
+    TreeNode* upsideDownBinaryTree(TreeNode* root) {
+        TreeNode* tmp = nullptr;
+        TreeNode* prv = nullptr;
+        TreeNode* curr = root;
+        
+        while (curr) {
+            TreeNode* nxt = curr->left;
+            
+            curr->left = tmp;
+            tmp = curr->right;
+            curr->right = prv;
+            
+            prv = curr;
+            curr = nxt;
+        }
+        
+        return prv;
+    }
+};
